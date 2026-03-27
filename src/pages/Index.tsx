@@ -4,8 +4,13 @@ import { Shield, Database, Lock, ChevronRight, Menu, X, ChevronDown, Star, Send,
 import { Button } from "@/components/ui/button";
 import heroBg from "@/assets/hero-bg.jpg";
 
+const scrollTo = (id: string) => {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+};
+
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const links = [["features","Recursos"],["testimonials","Depoimentos"],["pricing","Planos"],["faq","FAQ"],["contact","Contato"]];
   return (
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
@@ -19,43 +24,32 @@ const Navbar = () => {
           <span className="text-xl font-display font-bold text-foreground">DBShield</span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
-          <a href="#features" className="hover:text-foreground transition-colors">Recursos</a>
-          <a href="#testimonials" className="hover:text-foreground transition-colors">Depoimentos</a>
-          <a href="#pricing" className="hover:text-foreground transition-colors">Planos</a>
-          <a href="#faq" className="hover:text-foreground transition-colors">FAQ</a>
-          <a href="#contact" className="hover:text-foreground transition-colors">Contato</a>
+          {links.map(([id, label]) => (
+            <button key={id} onClick={() => scrollTo(id)} className="hover:text-foreground transition-colors">{label}</button>
+          ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
           <Button variant="ghost" size="sm">Entrar</Button>
-          <Button size="sm">Agendar Demo</Button>
+          <Button size="sm" onClick={() => scrollTo("contact")}>Agendar Demo</Button>
         </div>
-        <button
-          className="md:hidden text-muted-foreground hover:text-foreground transition-colors"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Menu"
-        >
+        <button className="md:hidden text-muted-foreground hover:text-foreground transition-colors" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Menu">
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
-            className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl overflow-hidden"
-          >
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.25 }}
+            className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-xl overflow-hidden">
             <div className="container py-4 flex flex-col gap-1">
-              {[["#features","Recursos"],["#testimonials","Depoimentos"],["#pricing","Planos"],["#faq","FAQ"],["#contact","Contato"]].map(([href, label]) => (
-                <a key={href} href={href} onClick={() => setMobileOpen(false)}
-                  className="py-3 px-2 text-muted-foreground hover:text-foreground transition-colors border-b border-border/30 last:border-0">
+              {links.map(([id, label]) => (
+                <button key={id} onClick={() => { scrollTo(id); setMobileOpen(false); }}
+                  className="py-3 px-2 text-left text-muted-foreground hover:text-foreground transition-colors border-b border-border/30 last:border-0">
                   {label}
-                </a>
+                </button>
               ))}
               <div className="flex gap-3 pt-3">
                 <Button variant="ghost" size="sm" className="flex-1">Entrar</Button>
-                <Button size="sm" className="flex-1">Agendar Demo</Button>
+                <Button size="sm" className="flex-1" onClick={() => { scrollTo("contact"); setMobileOpen(false); }}>Agendar Demo</Button>
               </div>
             </div>
           </motion.div>
@@ -85,8 +79,8 @@ const Hero = () => (
           Monitoramento contínuo, alertas em tempo real e proteção avançada para os dados mais críticos da sua empresa. Tudo em uma única plataforma.
         </p>
         <div className="flex flex-col sm:flex-row gap-4">
-          <Button variant="hero">Começar agora <ChevronRight className="ml-1 h-5 w-5" /></Button>
-          <Button variant="hero-outline">Agendar demonstração</Button>
+          <Button variant="hero" onClick={() => scrollTo("contact")}>Começar agora <ChevronRight className="ml-1 h-5 w-5" /></Button>
+          <Button variant="hero-outline" onClick={() => scrollTo("contact")}>Agendar demonstração</Button>
         </div>
         <div className="flex flex-wrap items-center gap-6 md:gap-8 mt-12 text-muted-foreground text-sm">
           {["+500 empresas protegidas","99.9% uptime","SOC 2 Compliant"].map((t) => (
@@ -196,7 +190,7 @@ const Pricing = () => (
                 </li>
               ))}
             </ul>
-            <Button variant={plan.popular ? "default" : "outline"} className="w-full" size="lg">Começar agora</Button>
+            <Button variant={plan.popular ? "default" : "outline"} className="w-full" size="lg" onClick={() => scrollTo("contact")}>Começar agora</Button>
           </motion.div>
         ))}
       </div>
@@ -318,9 +312,9 @@ const Footer = () => (
           <span className="font-display font-bold">DBShield</span>
         </div>
         <div className="flex gap-8 text-sm text-muted-foreground">
-          <a href="#" className="hover:text-foreground transition-colors">Privacidade</a>
-          <a href="#" className="hover:text-foreground transition-colors">Termos</a>
-          <a href="#contact" className="hover:text-foreground transition-colors">Contato</a>
+          <button onClick={() => scrollTo("features")} className="hover:text-foreground transition-colors">Privacidade</button>
+          <button onClick={() => scrollTo("features")} className="hover:text-foreground transition-colors">Termos</button>
+          <button onClick={() => scrollTo("contact")} className="hover:text-foreground transition-colors">Contato</button>
         </div>
         <p className="text-sm text-muted-foreground">© 2026 DBShield. Todos os direitos reservados.</p>
       </div>
